@@ -1,0 +1,68 @@
+const {DataTypes} = require("sequelize");
+const sequelize = require('../config/db');
+
+const Booking = sequelize.define('Booking',{
+    bookingId:{
+        type:DataTypes.INTEGER,
+        autoIncrement:true,
+        primaryKey:true,
+    },
+    checkinDate:{
+        type:DataTypes.DATEONLY,
+        allowNull:false,
+    },
+    checkoutDate:{
+        type:DataTypes.DATEONLY,
+        allowNull:false,
+    },
+    bookedAt:{
+        type:DataTypes.DATEONLY,
+        allowNull:false
+    },
+    totalGuest:{
+        type:DataTypes.INTEGER,
+        allowNull:false,
+    },
+    totalRooms:{
+        type:DataTypes.INTEGER,
+        allowNull:false
+    },
+    price:{
+        type:DataTypes.DOUBLE,
+        allowNull:false
+    },
+    paymentStatus:{
+        type:DataTypes.STRING,
+        allowNull:false,
+        validate:{
+            isIn:['paid','pending','declined']
+        }
+    },
+    bookingStatus:{
+        type:DataTypes.STRING,
+        allowNull:false,
+        defaultValue:'pending',
+        validate:{
+            isIn:['confirmed','pending','cancelled']
+        }
+    },
+    roomId:{
+        type:DataTypes.INTEGER,
+        allowNull:false,
+        references:{
+            model:'rooms',
+            key:'roomId',
+        },
+        onDelete:'CASCADE',
+        onUpdate:'CASCADE'
+    }
+},
+{
+    tableName:'bookings',
+    indexes:[
+        {
+            fields:['bookedAt']
+        }
+    ]
+}
+)
