@@ -70,3 +70,5 @@ const Owner = sequelize.define('Owner',{
     ]
 });
 
+module.exports = Owner
+

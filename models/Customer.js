@@ -12,7 +12,7 @@ const Customer = sequelize.define('Customer',{
         type: DataTypes.STRING,
         allowNull: false
     },
-    customer_email :{
+    customerEmail :{
         type: DataTypes.STRING,
         allowNull: false,
         unique:true
@@ -41,5 +41,5 @@ const Customer = sequelize.define('Customer',{
         tableName:'customers'
     });
 
-
+module.exports = Customer
     

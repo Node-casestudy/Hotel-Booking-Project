@@ -42,3 +42,4 @@ const Refund = sequelize.define('Refund',{
     }]
 }
 )
+module.exports = Refund;

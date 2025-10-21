@@ -3,26 +3,18 @@ const app = express();
 const cors = require("cors")
 const mssql = require("mssql")
 const sequelize = require('./config/db')
-const User = require('./models/User');
-const Customer = require('./models/Customer');
-const Owner = require('./models/Owner');
-const Admin = require('./models/Admin');
-const Hotel = require('./models/Hotel')
-const Room = require('./models/Room');
-const Booking = require('./models/Booking');
-const Payment = require('./models/Payment')
-const Cancellation = require('./models/Cancellation');
-const Refund = require('./models/Refund');
-const review = require('./models/Review')
+const { User, Customer, Owner, Admin, Hotel, Room, Booking, Payment } = require('./models');
+app.use(express.json());
 
+const authRoutes = require('./routes/authRoutes')
 app.use(cors());
-
+app.use('/api/auth',authRoutes);
 
 sequelize.authenticate()
   .then(() => console.log('DB Connected'))
   .catch(err => console.error('DB Connection Failed:', err));
 
-sequelize.sync({force:true}) // optional: create/alter tables
+sequelize.sync({create:true}) // optional: create/alter tables
   .then(() => console.log('Tables synced'));
 
 

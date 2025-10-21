@@ -41,4 +41,5 @@ const Admin = sequelize.define('Admin',{
     tableName:'admins'
 });
 
+module.exports = Admin
 

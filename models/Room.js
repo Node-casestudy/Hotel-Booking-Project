@@ -49,3 +49,5 @@ const Room = sequelize.define('Room',{
         }
     ]
 })
+
+module.exports = Room

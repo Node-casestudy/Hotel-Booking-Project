@@ -53,7 +53,7 @@ const Booking = sequelize.define('Booking',{
             model:'rooms',
             key:'roomId',
         },
-        onDelete:'CASCADE',
+        onDelete:'NO ACTION',
         onUpdate:'CASCADE'
     }
 },
@@ -66,3 +66,5 @@ const Booking = sequelize.define('Booking',{
     ]
 }
 )
+
+module.exports = Booking

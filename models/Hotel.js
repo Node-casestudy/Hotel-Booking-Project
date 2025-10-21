@@ -79,6 +79,4 @@ const Hotel = sequelize.define('Hotel',{
 });
 
 
-
-
-return Hotel;
+module.exports = Hotel
