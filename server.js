@@ -3,12 +3,27 @@ const app = express();
 const cors = require("cors")
 const mssql = require("mssql")
 const sequelize = require('./config/db')
-const { User, Customer, Owner, Admin, Hotel, Room, Booking, Payment } = require('./models');
+const { User, Customer, Owner, Admin, Hotel, Room, Booking, Payment,Cancellation,Refund } = require('./models');
 app.use(express.json());
 
-const authRoutes = require('./routes/authRoutes')
+const {authRoutes,customerRoutes,ownerRoutes,adminRoutes} = require('./routes')
 app.use(cors());
 app.use('/api/auth',authRoutes);
+app.use('/api/customer',customerRoutes);
+app.use('/api/owner',ownerRoutes);
+app.use('/api/admin',adminRoutes)
+
+
+
+
+
+
+
+
+
+
+
+
 
 sequelize.authenticate()
   .then(() => console.log('DB Connected'))

@@ -6,6 +6,8 @@ const Hotel = require('./Hotel');
 const Room = require('./Room');
 const Booking = require('./Booking');
 const Payment = require('./Payment');
+const Refund = require('./Refund')
+const Cancellation = require('./Cancellation')
 
 // Associations (as before)
 User.hasOne(Customer, { foreignKey: 'userId', as: 'customer' });
@@ -21,6 +23,8 @@ module.exports = {
   sequelize: require('../config/db'), // export sequelize instance
   User,
   Customer,
+  Cancellation,
+  Refund,
   Owner,
   Admin,
   Hotel,

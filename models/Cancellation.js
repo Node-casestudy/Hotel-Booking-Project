@@ -43,4 +43,4 @@ const Cancellation = sequelize.define('Cancellation',{
 }
 )
 
-module.exports = Cancellation
+module.exports = Cancellation;
