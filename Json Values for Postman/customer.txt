@@ -1,0 +1,11 @@
+{
+    "name":"Customer 1",
+    "email":"customer1@example.com",
+    "password":"Customer123",
+    "role":"customer",
+    "customerName":"Customer 1",
+    "customerEmail":"customer1@example.com",
+    "customerMobile":"9876543211",
+    "customerAddress":"1/11,ABC street,XYZ District"
+}
+

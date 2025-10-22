@@ -1,0 +1,30 @@
+[
+  {
+    "hotelName": "Hotel One",
+    "hotelType": "Luxury",
+    "description": "A luxurious hotel with excellent amenities and services.",
+    "amenities": ["Free WiFi", "Swimming Pool", "Gym", "Restaurant"],
+    "address": "123 Main Street",
+    "city": "New Delhi",
+    "state": "Delhi",
+    "country": "India",
+    "pincode": "110001",
+    "totalRooms": 100,
+    "priceMin": 5000,
+    "priceMax": 15000
+  },
+  {
+    "hotelName": "Hotel Two",
+    "hotelType": "Budget",
+    "description": "Comfortable and affordable stay with basic amenities.",
+    "amenities": ["Free WiFi", "Parking", "Breakfast Included"],
+    "address": "456 Market Street",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "country": "India",
+    "pincode": "400001",
+    "totalRooms": 50,
+    "priceMin": 2000,
+    "priceMax": 6000
+  }
+]

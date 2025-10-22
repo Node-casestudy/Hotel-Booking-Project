@@ -1,0 +1,28 @@
+{
+    "name":"Owner 1",
+    "email":"owner1@example.com",
+    "password":"Owner123",
+    "role":"owner",
+    "ownerName": "Owner 1",
+    "ownerEmail": "owner1@example.com",
+    "ownerMobile": "9000000001",
+    "ownerAddress": "Address 1",
+    "businessLicenceNo": "BLN-0001",
+    "gstNumber":"100000000000001",
+    "bankAccountNumber": "1111111111",
+    "ifscCode": "IFSC0001"
+};
+{
+    "name":"Owner 2",
+    "email":"owner2@example.com",
+    "password":"Owner123",
+    "role":"owner",
+    "ownerName": "Owner 2",
+    "ownerEmail": "owner2@example.com",
+    "ownerMobile": "9000000002",
+    "ownerAddress": "Address 2",
+    "businessLicenceNo": "BLN-0002",
+    "gstNumber":"100000000000002",
+    "bankAccountNumber": "2222222222",
+    "ifscCode": "IFSC0002"
+}

@@ -57,6 +57,19 @@ exports.login = async (req, res) => {
 
        
         const user = await User.findOne({ where: { email } });
+        let ownerId = null;
+        ////Important function to be created 
+        if(user.role == 'owner')
+        {
+          ownerId = await Owner.findOne(
+            {
+              where:{
+                userId:user.id
+              }
+            }
+          )
+          // console.log(ownerId);
+        }
 
         if (!user) {
             return res.status(401).json({ message: 'Invalid credentials' });
@@ -66,7 +79,11 @@ exports.login = async (req, res) => {
         if (!isMatch) {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
-
+        
+        if(ownerId.isVerified == false)
+        {
+          return res.status(401).json({message:"Unverified Owners can't login!!"})
+        }
         const token = jwt.sign(
             { id: user.id, role: user.role },
             JWT_SECRET,

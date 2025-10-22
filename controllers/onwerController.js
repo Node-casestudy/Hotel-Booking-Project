@@ -43,9 +43,9 @@ exports.getUnVerifiedOwner = async(req,res)=>{
       // res.status(200).json({message:verifiedOwner})
       if(verifiedOwner.length==0)
       {
-        res.status(404).json({message:"No Verified Owners Found"});
+        res.status(404).json({message:"No UnVerified Owners Found"});
       }
-      res.status(200).json({message:"Verified Onwers List",data:verifiedOwner})
+      res.status(200).json({message:"UnVerified Onwers List",data:verifiedOwner})
 }
 catch(err)
 {

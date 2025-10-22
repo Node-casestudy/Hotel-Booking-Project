@@ -4,6 +4,6 @@ const{verifyOwner} = require('../controllers/adminController');
 const {verifyToken,authorizeRole} = require('../middleware/authMiddleware')
 
 
-router.get('/ownerverify/:id',verifyToken,authorizeRole('admin'),verifyOwner)
+router.post('/ownerverify/:id',verifyToken,authorizeRole('admin'),verifyOwner)
 
 module.exports = router;

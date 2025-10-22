@@ -17,17 +17,25 @@ const Hotel = sequelize.define('Hotel',{
         allowNull:false,
         defaultValue: 'hotel',
     validate: {
-      isIn: [['hotel', 'resort', 'villa']],
-    },
-    },
+      isIn:[['hotel', 'resort', 'motel', 'guesthouse', 'Luxury']]
+    }
+},
     description:{
         type:DataTypes.STRING,
         allowNull:false,
     },
-    amenities:{
-        type:DataTypes.STRING,
-        allowNull:false,
-    },
+    amenities: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+        get() {
+            const rawValue = this.getDataValue('amenities');
+            return rawValue ? JSON.parse(rawValue) : [];
+        },
+        set(value) {
+            this.setDataValue('amenities', JSON.stringify(value));
+        }
+    }
+    ,
     address:{
         type:DataTypes.STRING,
         allowNull:false,
@@ -54,11 +62,29 @@ const Hotel = sequelize.define('Hotel',{
     },
     priceMin: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            min: 0, // minimum allowed value
+            isInt: true // must be an integer
+        }
     },
     priceMax: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            min: 0,
+            isInt: true,
+            isGreaterThanMin(value) {
+                if (value < this.priceMin) {
+                    throw new Error("priceMax must be greater than or equal to priceMin");
+                }
+            }
+        }
+    },    
+    isVerified:{
+        type:DataTypes.BOOLEAN,
+        allowNull:false,
+        defaultValue:false
     },
     ownerId:{
         type:DataTypes.INTEGER,
