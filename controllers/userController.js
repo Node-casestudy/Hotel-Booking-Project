@@ -68,8 +68,12 @@ exports.login = async (req, res) => {
               }
             }
           )
-          // console.log(ownerId);
+          if(ownerId.isVerified == false)
+        {
+          return res.status(401).json({message:"Unverified Owners can't login!!"})
         }
+          // console.log(ownerId);
+}
 
         if (!user) {
             return res.status(401).json({ message: 'Invalid credentials' });
@@ -80,10 +84,7 @@ exports.login = async (req, res) => {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
         
-        if(ownerId.isVerified == false)
-        {
-          return res.status(401).json({message:"Unverified Owners can't login!!"})
-        }
+        
         const token = jwt.sign(
             { id: user.id, role: user.role },
             JWT_SECRET,
