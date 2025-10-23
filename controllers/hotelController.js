@@ -1,49 +1,42 @@
 const { Hotel, Owner, User } = require("../models");
-
+const HotelService = require('../services/hotelService')
 exports.addHotel = async (req, res) => {
     try {
         const {hotelName, hotelType, description, amenities,address, city, state, country, pincode,
             totalRooms, priceMin, priceMax} = req.body;
 
-        
-        if (!hotelName || !hotelType || !description || !address || !city || !state || !country || !pincode || !totalRooms) {
-            return res.status(400).json({ message: "All required fields must be provided" });
-        }
-        if (priceMin < 0 || priceMax < 0) {
-            return res.status(400).json({ message: "Prices must be non-negative" });
-        }
-
-        if (priceMax < priceMin) {
-            return res.status(400).json({ message: "priceMax must be greater than priceMin" });
-        }
-
-        console.log('hello');
-
-        const ownerId = await Owner.findOne({
-            where:{
-                userId:req.ownerId
+            const ownerId = await Owner.findOne({
+                where:{
+                    userId:req.ownerId
+                }
+            });
+            if(!ownerId || ownerId.length==0){
+                return res.status(404).json({message:"No Owner Found"})
             }
-        });
-        // console.log(ownerId.ownerId);
-        const hotelAdding = await Hotel.create({
-            hotelName,
-            hotelType,
-            description,
-            amenities: JSON.stringify(amenities), 
-            address,
-            city,
-            state,
-            country,
-            pincode,
-            totalRooms,
-            priceMin,
-            priceMax,
-            ownerId: ownerId.ownerId
-        });
+            const hotelData = {
+                hotelName,
+                hotelType,
+                description,
+                amenities,
+                address,
+                city,
+                state,
+                country,
+                pincode,
+                totalRooms,
+                priceMin,
+                priceMax,
+                ownerId:ownerId.ownerId
+              };
+              console.log(ownerId.ownerId);
+        const newHotel = await HotelService.addHotel(hotelData);
 
-        console.log('Hi');
-
-        res.status(201).json({ message: "Hotel Added Successfully", data: hotelAdding });
+        console.log(newHotel);
+              if(!newHotel || newHotel.length ==0)
+              {
+                res.status(400).json({message:"Cant Added"})
+              }
+        res.status(201).json({ message: "Hotel Added Successfully", data: newHotel });
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: "Internal Server Error" });
@@ -53,21 +46,8 @@ exports.addHotel = async (req, res) => {
 
 exports.getAllHotels = async(req,res)=>{
     try{
-        const AllHotels = await Hotel.findAll({
-            include: [
-                {
-                    model: Owner,
-                    as: 'owner',
-                    include: [
-                        {
-                            model: User,
-                            as: 'user',
-                            attributes: { exclude: ['password'] }
-                        }
-                    ]
-                }
-            ]
-        });
+        const AllHotels = await HotelService.getallhotels();
+        
         
         res.status(200).json({message:"All Hotels List",data:AllHotels})
     }
@@ -80,11 +60,7 @@ exports.getAllHotels = async(req,res)=>{
 
 exports.getUnVerifiedHotels = async(req,res)=>{
     try{
-        const unverifiedHotels = await Hotel.findAll({
-            where:{
-                isVerified : false
-            }
-        })
+        const unverifiedHotels = await HotelService.getUnVerifiedHotels();
         if(unverifiedHotels.length==0 || !unverifiedHotels)
         {
             return res.status(200).json({message:"No Unverified Hotels Found!!!"})
@@ -99,15 +75,11 @@ exports.getUnVerifiedHotels = async(req,res)=>{
 
 exports.getVerifiedHotels = async(req,res)=>{
     try{
-        const verifiedHotels = await Hotel.findAll({
-            where:{
-                isVerified : true
-            }
-        })
+        const verifiedHotels = await HotelService.getVerifiedHotels();
         if(!verifiedHotels || verifiedHotels.length==0 ){
             return res.status(200).json({message:"No Verified Hotels Found!!"})
         }
-        res.status(200).json({message:"verified Hotels List",data:verifiedHotels})
+        return res.status(200).json({message:"verified Hotels List",data:verifiedHotels})
     }
     catch(err){
         console.log(err);
@@ -118,13 +90,7 @@ exports.getVerifiedHotels = async(req,res)=>{
 exports.getHotelById = async(req,res) =>{
     try{
         const {id} = req.params;
-        const hotel = await Hotel.findOne(
-            {
-                where:{
-                    hotelId : id
-                }
-            }
-        )
+        const hotel = await HotelService.getHotelById(id)
         if(!hotel || hotel.length==0){
             return res.status(404).json({message:"No Hotels found on this ID"})
         }
@@ -135,4 +101,54 @@ exports.getHotelById = async(req,res) =>{
         console.log(err);
         res.status(500).json({message:"Internal Server Error"})
     }
+};
+
+exports.getHotelByType = async(req,res)=>{
+    try{
+        const {hoteltype} = req.params;
+        const hotels = await HotelService.getHotelsByType(hoteltype);
+        if(!hotels || hotels.length==0)
+        {
+            return res.status(404).json({message:"No hotels found on this type"});
+        }
+        // console.log(hoteltype.toLowerCase())
+        res.status(200).json({message:"Hotels list based on your Type",data:hotels});        
+    }
+    catch(err)
+    {
+        console.log('search by type is not worked');
+        res.status(500).json({message:"Internal server error",data:err})
+
+    }
+};
+
+exports.getHotelbyCity = async(req,res)=>{
+    try{
+        const {city} = req.params;
+        const hotels = await HotelService.getHotelsbyCity(city);
+        if(!hotels || hotels.length==0)
+        {
+          return res.status(404).json({message:"No hotels on this city!!!"});  
+        }
+        res.status(200).json({message:"Hotels on your city",data:hotels})
+    }
+    catch(err){
+        res.status(500).json({message:"Internal server error at gethotelbycity"})
+    }
+};
+
+exports.gethotelsbystate = async(req,res)=>{
+try{
+    const {state} = req.params;
+    const hotels = await HotelService.getHotelByState(state);
+    if(!hotels || hotels.length==0)
+    {
+        return res.status(404).json({message:"No hotels in your selected state"})
+    }
+    res.status(200).json({message:"Hotels list based on your state",data:hotels})
+}
+catch(err)
+{
+    res.status(500).json({message:"Internal server Error"})
+}
 }

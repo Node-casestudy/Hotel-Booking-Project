@@ -17,7 +17,7 @@ const Hotel = sequelize.define('Hotel',{
         allowNull:false,
         defaultValue: 'hotel',
     validate: {
-      isIn:[['hotel', 'resort', 'motel', 'guesthouse', 'Luxury']]
+      isIn:[['hotel', 'resort', 'motel', 'guesthouse', 'luxury']]
     }
 },
     description:{
