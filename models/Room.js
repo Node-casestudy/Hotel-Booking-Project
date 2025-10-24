@@ -5,7 +5,27 @@ const Room = sequelize.define('Room',{
     roomId:{
         type:DataTypes.INTEGER,
         primaryKey:true,
+        autoIncrement:true,
         allowNull:false
+    },
+    roomNumber:{
+        type:DataTypes.INTEGER,
+        allowNull:false
+    },
+    bedType:{
+        type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      isIn: [['Single', 'Double', 'Queen', 'King', 'Twin', 'Full', 'Super King', 'Bunk Bed', 'Sofa Bed', 'Murphy Bed']]
+    }
+    },
+    capacity:{
+        type:DataTypes.INTEGER,
+        allowNull:false,
+        validate: {
+            min: 1,
+            max: 10
+        }
     },
     roomType:{
         type:DataTypes.STRING,
@@ -15,8 +35,15 @@ const Room = sequelize.define('Room',{
         }
     },
     roomAmenities:{
-        type:DataTypes.STRING,
-        allowNull:false
+        type: DataTypes.TEXT,
+        allowNull: true,
+        get() {
+            const rawValue = this.getDataValue('roomAmenities');
+            return rawValue ? JSON.parse(rawValue) : [];
+        },
+        set(value) {
+            this.setDataValue('roomAmenities', JSON.stringify(value));
+        }
     },
     roomPrice:{
         type:DataTypes.INTEGER,
@@ -25,6 +52,7 @@ const Room = sequelize.define('Room',{
     availability:{
         type:DataTypes.STRING,
         allowNull:false,
+        defaultValue:"available",
         validate:{
             isIn:[['available','not_available']]
         }

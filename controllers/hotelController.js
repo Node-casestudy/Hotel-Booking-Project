@@ -107,12 +107,23 @@ exports.getHotelByType = async(req,res)=>{
     try{
         const {hoteltype} = req.params;
         const hotels = await HotelService.getHotelsByType(hoteltype);
+        console.log(hotels.isVerified)
+       
         if(!hotels || hotels.length==0)
         {
             return res.status(404).json({message:"No hotels found on this type"});
         }
+
+        const verifiedHotels = hotels.filter(hotel => hotel.isVerified === true);
         // console.log(hoteltype.toLowerCase())
-        res.status(200).json({message:"Hotels list based on your Type",data:hotels});        
+        if (verifiedHotels.length === 0) {
+            return res.status(404).json({ message: "No verified hotels found for this type" });
+          }
+          
+          return res.status(200).json({
+            message: "Verified hotels for your searched type fetched successfully",
+            data: verifiedHotels
+          });        
     }
     catch(err)
     {
@@ -130,7 +141,16 @@ exports.getHotelbyCity = async(req,res)=>{
         {
           return res.status(404).json({message:"No hotels on this city!!!"});  
         }
-        res.status(200).json({message:"Hotels on your city",data:hotels})
+        const verifiedHotels = hotels.filter(hotel => hotel.isVerified === true);
+
+        if (verifiedHotels.length === 0) {
+            return res.status(404).json({ message: "No (verified) hotels found for this city" });
+          }
+          
+          return res.status(200).json({
+            message: "Verified hotels for your searched type fetched successfully",
+            data: verifiedHotels
+          }); 
     }
     catch(err){
         res.status(500).json({message:"Internal server error at gethotelbycity"})
@@ -145,8 +165,17 @@ try{
     {
         return res.status(404).json({message:"No hotels in your selected state"})
     }
-    res.status(200).json({message:"Hotels list based on your state",data:hotels})
-}
+    const verifiedHotels = hotels.filter(hotel => hotel.isVerified === true);
+    // console.log(hoteltype.toLowerCase())
+    if (verifiedHotels.length === 0) {
+        return res.status(404).json({ message: "No (verified) hotels found for this state" });
+      }
+      
+      return res.status(200).json({
+        message: "Verified hotels for your searched type fetched successfully",
+        data: verifiedHotels
+      }); 
+    }
 catch(err)
 {
     res.status(500).json({message:"Internal server Error"})

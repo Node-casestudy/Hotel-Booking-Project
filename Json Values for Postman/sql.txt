@@ -1,0 +1,14 @@
+use hotel_booking_db;
+GO
+
+select * from users;
+select * from customers;
+select * from owners;
+select * from admins;
+select * from hotels;
+select * from rooms;
+select * from bookings;
+select * from cancellations;
+select * from payments;
+select * from refunds;
+

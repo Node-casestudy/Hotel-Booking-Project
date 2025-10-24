@@ -15,8 +15,19 @@ exports.register = async (req, res) => {
     const { error, value } = schema.validate(req.body);
 
     if (error) {
-      return res.status(400).json({ message: 'Validation error', error: error.details[0].message });
+      return res.status(400).json({ message: 'User Already Exist!!!', error: error.details[0].message });
     }
+
+    // console.log(value.email);
+    //in future user existence will find by mobile also
+    const userExisting = await User.findOne({
+      where:{
+        email:value.email
+      }
+    });
+    if(userExisting){
+      return res.status(409).json({message:"User Already Exist!!! Try to Login"});
+    };
 
     const hashedPassword = await bcrypt.hash(value.password, 10);
 
@@ -57,6 +68,13 @@ exports.login = async (req, res) => {
 
        
         const user = await User.findOne({ where: { email } });
+        if (!user) {
+          return res.status(401).json({ message: 'Invalid credentials' });
+      }
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+          return res.status(401).json({ message: 'Invalid credentials' });
+      }
         let ownerId = null;
         ////Important function to be created 
         if(user.role == 'owner')
@@ -75,16 +93,6 @@ exports.login = async (req, res) => {
           // console.log(ownerId);
 }
 
-        if (!user) {
-            return res.status(401).json({ message: 'Invalid credentials' });
-        }
-
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(401).json({ message: 'Invalid credentials' });
-        }
-        
-        
         const token = jwt.sign(
             { id: user.id, role: user.role },
             JWT_SECRET,

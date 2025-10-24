@@ -6,13 +6,14 @@ const sequelize = require('./config/db')
 const { User, Customer, Owner, Admin, Hotel, Room, Booking, Payment,Cancellation,Refund } = require('./models');
 app.use(express.json());
 
-const {authRoutes,customerRoutes,ownerRoutes,adminRoutes,hotelRoutes} = require('./routes')
+const {authRoutes,customerRoutes,ownerRoutes,adminRoutes,hotelRoutes,roomRoutes} = require('./routes')
 app.use(cors());
 app.use('/api/auth',authRoutes);
 app.use('/api/customer',customerRoutes);
 app.use('/api/owner',ownerRoutes);
 app.use('/api/admin',adminRoutes);
-app.use('/api/hotel',hotelRoutes)
+app.use('/api/hotel',hotelRoutes);
+app.use('/api/room',roomRoutes)
 
 
 

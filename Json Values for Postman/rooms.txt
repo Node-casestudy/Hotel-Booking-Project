@@ -1,0 +1,26 @@
+[
+  {
+    "roomNumber": "101",
+    "bedType": "Queen",
+    "capacity": 2,
+    "roomType": "Deluxe",
+    "roomAmenities": ["Air Conditioning", "WiFi", "TV", "Mini Fridge"],
+    "roomPrice": 3500
+  },
+  {
+    "roomNumber": "202",
+    "bedType": "Twin",
+    "capacity": 2,
+    "roomType": "Standard",
+    "roomAmenities": ["Fan", "WiFi", "TV"],
+    "roomPrice": 2200
+  },
+  {
+    "roomNumber": "305",
+    "bedType": "King",
+    "capacity": 4,
+    "roomType": "Suite",
+    "roomAmenities": ["Air Conditioning", "WiFi", "TV", "Mini Bar", "Balcony", "Bathtub"],
+    "roomPrice": 5500
+  }
+]

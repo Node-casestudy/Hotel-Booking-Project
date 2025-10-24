@@ -1,4 +1,5 @@
 const { Owner } = require("../models")
+const OwnerService = require('../services/ownerService')
 
 exports.getOwner = async(req,res)=>{
     try{
@@ -61,9 +62,7 @@ exports.getOwnerById = async (req, res) => {
       return res.status(400).json({ message: "Owner ID is required" });
     }
 
-    const owner = await Owner.findOne({
-      where: { ownerId: id }
-    });
+    const owner = await OwnerService.getOwnerById(id);
 
     if (!owner) {
       return res.status(404).json({ message: "Owner not found" });
