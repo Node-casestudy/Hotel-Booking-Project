@@ -39,7 +39,7 @@ exports.addHotel = async (req, res) => {
         res.status(201).json({ message: "Hotel Added Successfully", data: newHotel });
     } catch (err) {
         console.log(err);
-        res.status(500).json({ message: "Internal Server Error" });
+        res.status(500).json({ message: "Check the details correctly" });
     }
 };
 
@@ -180,4 +180,5 @@ catch(err)
 {
     res.status(500).json({message:"Internal server Error"})
 }
-}
+};
+

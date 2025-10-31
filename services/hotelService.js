@@ -36,15 +36,17 @@ exports.addHotel = async(hotelData)=>{
 exports.getallhotels = async()=>{
   try{
     return await Hotel.findAll({
+        attributes: { exclude: ['ownerId'] },
         include: [
             {
                 model: Owner,
                 as: 'owner',
+                attributes:['isVerified'],
                 include: [
                     {
                         model: User,
                         as: 'user',
-                        attributes: { exclude: ['password'] }
+                        attributes: { exclude: ['id','password','refreshToken','role'] }
                     }
                 ]
             }
@@ -105,4 +107,4 @@ exports.getHotelByState = async(state)=>{
             state:state
         }
     })
-}
+};

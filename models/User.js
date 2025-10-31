@@ -27,6 +27,10 @@ const User = sequelize.define('User', {
       isIn: [['customer', 'owner', 'admin']],
     },
     allowNull:false
+  },
+  refreshToken: {
+    type: DataTypes.STRING,
+    allowNull: true,
   }
 }, {
   tableName: 'users',

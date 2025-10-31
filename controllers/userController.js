@@ -93,18 +93,27 @@ exports.login = async (req, res) => {
           // console.log(ownerId);
 }
 
-        const token = jwt.sign(
+        const Accesstoken = jwt.sign(
             { id: user.id, role: user.role },
             JWT_SECRET,
             { expiresIn: '15m' } 
         );
 
+        const refreshToken = jwt.sign(
+          { userId: user.id },
+          process.env.REFRESH_TOKEN_SECRET,
+          { expiresIn: "7d" }
+        );
+
+        await User.update({ refreshToken }, { where: { id: user.id } });
+
         const { password: _, ...userData } = user.toJSON();
 
         res.status(200).json({
             message: 'Login successful',
-            user: userData,
-            token
+            // user: userData,
+            Accesstoken,
+            refreshToken
         });
 
     } catch (error) {
@@ -112,3 +121,51 @@ exports.login = async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
+
+
+
+exports.refresh = async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+    if (!refreshToken) {
+      return res.status(401).json({ message: "Refresh token required" });
+    }
+
+    const user = await User.findOne({ where: { refreshToken } });
+    if (!user) {
+      return res.status(403).json({ message: "Invalid refresh token" });
+    }
+
+    // Verify token validity
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
+      if (err) return res.status(403).json({ message: "Invalid or expired refresh token" });
+
+      const accessToken = jwt.sign(
+        { userId: user.id, role: user.role },
+        process.env.JWT_SECRET,
+        { expiresIn: "15m" }
+      );
+
+      return res.status(200).json({ accessToken });
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+
+exports.logout = async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+    if (!refreshToken) return res.status(400).json({ message: "Token required" });
+
+    await User.update({ refreshToken: null }, { where: { refreshToken } });
+    return res.status(200).json({ message: "Logged out successfully" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+

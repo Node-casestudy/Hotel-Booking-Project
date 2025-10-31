@@ -11,6 +11,7 @@ exports.verifyToken = async(req,res,next)=>{
     try{
         const decoded = jwt.verify(token,process.env.JWT_SECRET);
         req.user = decoded;
+        // console.log("Inside verifyToken");
         next();
     }
     catch(err)
@@ -26,7 +27,9 @@ exports.authorizeRole = (...allowedRoles) => {
       }
       if (req.user.role === 'owner') {
         req.ownerId = req.user.id;
+        
     }
+    // console.log("Inside authorizeRole");
       next();
     };
   };

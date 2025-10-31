@@ -15,7 +15,7 @@
   },
   {
     "hotelName": "Hotel Two",
-    "hotelType": "Budget",
+    "hotelType": "guesthouse",
     "description": "Comfortable and affordable stay with basic amenities.",
     "amenities": ["Free WiFi", "Parking", "Breakfast Included"],
     "address": "456 Market Street",

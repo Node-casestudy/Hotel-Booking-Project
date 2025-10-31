@@ -9,3 +9,13 @@
     "customerAddress":"1/11,ABC street,XYZ District"
 }
 
+{
+  "name": "Customer 2",
+  "email": "customer2@example.com",
+  "password": "Customer123",
+  "role": "customer",
+  "customerName": "Customer 2",
+  "customerEmail": "customer2@example.com",
+  "customerMobile": "9876543212",
+  "customerAddress": "2/22, DEF Street, PQR District"
+}

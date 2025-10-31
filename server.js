@@ -4,10 +4,16 @@ const cors = require("cors")
 const mssql = require("mssql")
 const sequelize = require('./config/db')
 const { User, Customer, Owner, Admin, Hotel, Room, Booking, Payment,Cancellation,Refund } = require('./models');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger');
+
 app.use(express.json());
 
 const {authRoutes,customerRoutes,ownerRoutes,adminRoutes,hotelRoutes,roomRoutes} = require('./routes')
 app.use(cors());
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 app.use('/api/auth',authRoutes);
 app.use('/api/customer',customerRoutes);
 app.use('/api/owner',ownerRoutes);
